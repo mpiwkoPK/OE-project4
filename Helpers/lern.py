@@ -87,7 +87,8 @@ class Model:
             case InversionMethodsEnum.TWO_POINT:
                 self.inversion_function = InversionMethod(number_of_dimensions).inverse
 
-    def find_best_spec(self, fn, population, direction: MinMax):
+    @staticmethod
+    def find_best_spec(fn, population, direction: MinMax):
         best_index = 0
         for i in range(1, len(population)):
             value1 = population[best_index]
@@ -98,7 +99,8 @@ class Model:
                 best_index = i
         return population[best_index]
 
-    def worst_best_spec_index(self, fn, population, direction: MinMax) -> int:
+    @staticmethod
+    def worst_best_spec_index(fn, population, direction: MinMax) -> int:
         best_index = 0
         for i in range(1, len(population)):
             value1 = population[best_index]
@@ -143,7 +145,6 @@ class Model:
     def getBestAlive(self, population):
         best_values = np.array([self.func(individual) for individual in population])
         best_quantity = math.floor(len(population) * self.elitism_rate)
-        # a[a[:, 1].argsort()]
         zip = np.column_stack((best_values, population))
         sorted = zip[zip[:, 0].argsort()]
         return np.array(list(map(lambda x: x[1:], sorted[:best_quantity])))
@@ -167,19 +168,18 @@ class Model:
 
             best_old_spec = self.getBestAlive(population)
             best_old_spec = copy.deepcopy(best_old_spec)
-            # best_new_spec = self.find_best_spec(self.func, temp_population, self.direction)
+            best_new_spec = self.find_best_spec(self.func, temp_population, self.direction)
 
             for spec_index in range(self.size_of_population):
                 spec = temp_population[spec_index]
-                # if not is_best_alive and np.array_equal(spec, best_new_spec):
-                #     is_best_alive = True
-                #     continue
+                if not is_best_alive and np.array_equal(spec, best_new_spec):
+                    is_best_alive = True
+                    continue
                 for chrom_index in range(self.number_of_dimensions):
                     if random.random() >= self.mutation_prob:
                         temp_population[spec_index] = self.mutation_function(spec, self.mutation_prob)
-            # for i in range(len(temp_population)):
-            #     if random.random() >= self.inversion_prob:
-            #         temp_population[i] = self.inversion_function(temp_population[i], self.inversion_prob)
+            for i in range(len(temp_population)):
+                temp_population[i] = self.inversion_function(temp_population[i], self.inversion_prob)
 
             temp_population = np.append(temp_population, best_old_spec, axis=0)
             population = temp_population
