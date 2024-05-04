@@ -5,7 +5,7 @@ import time
 
 from Consts.enums import MinMax, CrossingMechods, SelectionMechods, MutationMechods, FunctionsOptions, \
     InversionMethods as InversionMethodsEnum
-from Helpers.crossingMethods import SingleArithmeticalCrossover
+from Helpers.crossingMethods import SingleArithmeticalCrossover, ArithmeticalCrossover, LinearCrossover, BlendCrossoverAlfa, BlendCrossoverAlfaBeta, AverageCrossover, RandomCrossover, SimpleCrossover
 from Helpers.functions import rastrigin, schwefel
 from Helpers.inversionMethod import InversionMethod
 from Helpers.mutationMethods import UniformMutation, GaussMutation
@@ -80,6 +80,20 @@ class Model:
         match crossing_function:
             case CrossingMechods.SINGLE_POINT_ARITHMETIC:
                 self.crossing_function = SingleArithmeticalCrossover(0.2).crossover
+            case CrossingMechods.ARITHMETIC:
+                self.crossing_function = ArithmeticalCrossover(0.2).crossover
+            case CrossingMechods.LINEAR:
+                self.crossing_function = LinearCrossover(0.2).crossover
+            case CrossingMechods.BLEND_ALFA:
+                self.crossing_function = BlendCrossoverAlfa(0.2).crossover
+            case CrossingMechods.BLEND_ALFA_BETA:
+                self.crossing_function = BlendCrossoverAlfaBeta(0.2).crossover
+            case CrossingMechods.AVERAGE:
+                self.crossing_function = AverageCrossover(0.2).crossover
+            case CrossingMechods.RANDOM:
+                self.crossing_function = RandomCrossover(0.2).crossover
+            case CrossingMechods.SIMPLE:
+                self.crossing_function = SimpleCrossover(0.2).crossover
         match mutation_function:
             case MutationMechods.UNIFORM:
                 self.mutation_function = UniformMutation(number_of_dimensions).mutate
@@ -189,7 +203,7 @@ class Model:
         self.end_population = population
         self.end_time = time.perf_counter()
 
-    def getChats(self):
+    def getCharts(self):
         make_plot(self.best_values, 'best', self.title, 'log')
         save_to_file(self.best_values, self.best_spec, 'best')
         make_plot(self.avg_values, 'avg', self.title)

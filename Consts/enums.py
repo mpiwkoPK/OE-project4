@@ -15,8 +15,23 @@ class SelectionMechods(Enum):
 class CrossingMechods(Enum):
     SINGLE_POINT_ARITHMETIC = 0
     SINGLE_POINT_ARITHMETIC_STRING = 'Krzyżowanie 1 arytmetyczne'
+    ARITHMETIC = 1
+    ARITHMETIC_STRING = 'Krzyżowanie arytmetyczne'
+    LINEAR = 2
+    LINEAR_STRING = 'Krzyżowanie linearne'
+    BLEND_ALFA = 3
+    BLEND_ALFA_STRING = 'Krzyżowanie mieszające typu alfa'
+    BLEND_ALFA_BETA = 4
+    BLEND_ALFA_BETA_STRING = 'Krzyżowanie mieszające typu alfa i beta'
+    AVERAGE = 5
+    AVERAGE_STRING = 'Krzyżowanie uśredniające'
+    SIMPLE = 6
+    SIMPLE_STRING = 'Krzyżowanie proste'
+    RANDOM = 7
+    RANDOM_STRING = 'Krzyżowanie przypadkowe'
 
-    ALL_OPTIONS_STRING = [SINGLE_POINT_ARITHMETIC_STRING]
+
+    ALL_OPTIONS_STRING = [SINGLE_POINT_ARITHMETIC_STRING, ARITHMETIC_STRING, LINEAR_STRING, BLEND_ALFA_STRING, BLEND_ALFA_BETA_STRING, AVERAGE_STRING, SIMPLE_STRING, RANDOM_STRING]
 
 
 class MutationMechods(Enum):

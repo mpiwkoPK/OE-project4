@@ -56,7 +56,7 @@ class MainWindow(QWidget):
         final_string += local_model.getStartString()
         local_model.fitness()
         final_string += local_model.getEndString()
-        local_model.getChats()
+        local_model.getCharts()
         self.resLabel.setText(f'Wyniki {final_string}')
 
     def set_selection_method(self, option: int):
@@ -84,6 +84,28 @@ class MainWindow(QWidget):
             case CrossingMechods.SINGLE_POINT_ARITHMETIC.value:
                 self.crossingName = CrossingMechods.SINGLE_POINT_ARITHMETIC_STRING.value
                 self.crossing_method = CrossingMechods.SINGLE_POINT_ARITHMETIC
+            case CrossingMechods.ARITHMETIC.value:
+                self.crossingName = CrossingMechods.ARITHMETIC_STRING.value
+                self.crossing_method = CrossingMechods.ARITHMETIC
+            case CrossingMechods.LINEAR.value:
+                self.crossingName = CrossingMechods.LINEAR_STRING.value
+                self.crossing_method = CrossingMechods.LINEAR
+            case CrossingMechods.BLEND_ALFA.value:
+                self.crossingName = CrossingMechods.BLEND_ALFA_STRING.value
+                self.crossing_method = CrossingMechods.BLEND_ALFA
+            case CrossingMechods.BLEND_ALFA_BETA.value:
+                self.crossingName = CrossingMechods.BLEND_ALFA_BETA_STRING.value
+                self.crossing_method = CrossingMechods.BLEND_ALFA_BETA
+            case CrossingMechods.AVERAGE.value:
+                self.crossingName = CrossingMechods.AVERAGE_STRING.value
+                self.crossing_method = CrossingMechods.AVERAGE
+            case CrossingMechods.RANDOM.value:
+                self.crossingName = CrossingMechods.RANDOM_STRING.value
+                self.crossing_method = CrossingMechods.RANDOM
+            case CrossingMechods.SIMPLE.value:
+                self.crossingName = CrossingMechods.SIMPLE_STRING.value
+                self.crossing_method = CrossingMechods.SIMPLE
+
 
     def set_mutation_method(self, option: int):
         self.mean_label.hide()
@@ -174,7 +196,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("OE Proj 2. Wieczorek, Piwko, Ratowska")
+        self.setWindowTitle("OE Proj 4. Wieczorek, Piwko, Ratowska")
         layout_items = []
 
         function_layout = QHBoxLayout()
@@ -304,7 +326,7 @@ class MainWindow(QWidget):
         self.selection_options_slider.hide()
         layout_items.append(self.selection_options_slider)
 
-        
+
 
         # Crossing
         crossing_layout = QHBoxLayout()
