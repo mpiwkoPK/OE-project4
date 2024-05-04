@@ -18,15 +18,17 @@ class MainWindow(QWidget):
     numberOfDimensions = 2
     q = 1
     tournament_size = 1
+    mean = 50
+    sigma = 5
 
     selectionName = SelectionMechods.BEST_STRING.value
     crossingName = CrossingMechods.SINGLE_POINT_ARITHMETIC_STRING.value
-    mutationName = MutationMechods.EDGE_STRING.value
+    mutationName = MutationMechods.UNIFORM_STRING.value
     inversionName = InversionMethods.TWO_POINT_STRING.value
     minmax = MinMax.MIN
     selection_method = SelectionMechods.BEST
     crossing_method = CrossingMechods.SINGLE_POINT_ARITHMETIC
-    mutation_method = MutationMechods.SINGLE_POINT
+    mutation_method = MutationMechods.UNIFORM
     func = FunctionsOptions.RASTRIGIN
     inversion_method = InversionMethods.TWO_POINT
 
@@ -43,6 +45,8 @@ class MainWindow(QWidget):
                             inversion_prob=self.inversionProb,
                             inversion_function=self.inversion_method,
                             number_of_dimensions=self.numberOfDimensions,
+                            mean=self.mean,
+                            sigma=self.sigma,
                             func=self.func,
                             title=f'{self.selectionName} - {self.crossingName}',
                             direction=self.minmax,
@@ -82,16 +86,25 @@ class MainWindow(QWidget):
                 self.crossing_method = CrossingMechods.SINGLE_POINT_ARITHMETIC
 
     def set_mutation_method(self, option: int):
+        self.mean_label.hide()
+        self.sigma_label.hide()
+        self.mean_slider.hide()
+        self.sigma_slider.hide()
         match option:
-            case MutationMechods.EDGE.value:
-                self.mutationName = MutationMechods.EDGE_STRING.value
-                self.mutation_method = MutationMechods.EDGE
-            case MutationMechods.SINGLE_POINT.value:
-                self.mutationName = MutationMechods.SINGLE_POINT_STRING.value
-                self.mutation_method = MutationMechods.SINGLE_POINT
-            case MutationMechods.DOUBLE_POINT.value:
-                self.mutationName = MutationMechods.DOUBLE_POINT_STRING.value
-                self.mutation_method = MutationMechods.DOUBLE_POINT
+            case MutationMechods.UNIFORM.value:
+                self.mutationName = MutationMechods.UNIFORM_STRING.value
+                self.mutation_method = MutationMechods.UNIFORM
+            case MutationMechods.GAUSS.value:
+                self.mean_label.setText(f'Średnia {self.mean_slider.value()}')
+                self.mean_label.show()
+                self.mean_slider.valueChanged.connect(self.set_mean)
+                self.mean_slider.show()
+                self.sigma_label.setText(f'Odchylenie standardowe {self.sigma_slider.value()}')
+                self.sigma_label.show()
+                self.sigma_slider.valueChanged.connect(self.set_sigma)
+                self.sigma_slider.show()
+                self.mutationName = MutationMechods.GAUSS_STRING.value
+                self.mutation_method = MutationMechods.GAUSS
 
     def set_inversion_method(self, option: int):
         match option:
@@ -130,6 +143,14 @@ class MainWindow(QWidget):
     def set_inversion_prob(self, val):
         self.inversionProb = val / 1000
         self.inversionProbLabel.setText(f'Prawdopodobieństwo inwersji {self.inversionProb}')
+
+    def set_mean(self, val):
+        self.meanValue = val
+        self.mean_label.setText(f'Średnia {self.meanValue}')
+
+    def set_sigma(self, val):
+        self.sigmaValue = val
+        self.sigma_label.setText(f'Odchylenie standardowe {self.sigmaValue}')
 
     def set_q(self, val):
         self.crossing_options_label.setText(f'q {val}')
@@ -283,6 +304,8 @@ class MainWindow(QWidget):
         self.selection_options_slider.hide()
         layout_items.append(self.selection_options_slider)
 
+        
+
         # Crossing
         crossing_layout = QHBoxLayout()
         crossing_layout.setContentsMargins(0, 0, 0, 0)
@@ -321,6 +344,22 @@ class MainWindow(QWidget):
         mutation_container.setLayout(mutation_layout)
         layout_items.append(mutation_container)
 
+        self.mean_label = QLabel('')
+        self.mean_label.hide()
+        layout_items.append(self.mean_label)
+
+        self.mean_slider = makeSlider(1, 1000, self.mean)
+        self.mean_slider.hide()
+        layout_items.append(self.mean_slider)
+
+        self.sigma_label = QLabel('')
+        self.sigma_label.hide()
+        layout_items.append(self.sigma_label)
+
+        self.sigma_slider = makeSlider(1, 500, self.sigma)
+        self.sigma_slider.hide()
+        layout_items.append(self.sigma_slider)
+
         mutation_prob_layout = QHBoxLayout()
         mutation_prob_layout.setContentsMargins(0, 0, 0, 0)
         self.mutationLabel = QLabel(f'Prawdopodobieństwo mutacji {self.mutationProb}')
@@ -348,6 +387,7 @@ class MainWindow(QWidget):
         inversion_container = QWidget()
         inversion_container.setLayout(inversion_layout)
         layout_items.append(inversion_container)
+
 
         # Start
         button = QPushButton("Oblicz")

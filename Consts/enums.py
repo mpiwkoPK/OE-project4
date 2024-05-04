@@ -20,14 +20,12 @@ class CrossingMechods(Enum):
 
 
 class MutationMechods(Enum):
-    EDGE = 0
-    SINGLE_POINT = 1
-    DOUBLE_POINT = 2
-    EDGE_STRING = 'Brzegowa'
-    SINGLE_POINT_STRING = '1 punktowa'
-    DOUBLE_POINT_STRING = '2 punktowa'
+    UNIFORM = 0
+    GAUSS = 1
+    UNIFORM_STRING = 'Równomierna'
+    GAUSS_STRING = 'Gaussa'
 
-    ALL_OPTIONS_STRING = [SINGLE_POINT_STRING, DOUBLE_POINT_STRING, EDGE_STRING]
+    ALL_OPTIONS_STRING = [ UNIFORM_STRING,GAUSS_STRING]
 
 
 class InversionMethods(Enum):

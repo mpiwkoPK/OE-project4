@@ -8,7 +8,7 @@ from Consts.enums import MinMax, CrossingMechods, SelectionMechods, MutationMech
 from Helpers.crossingMethods import SingleArithmeticalCrossover
 from Helpers.functions import rastrigin, schwefel
 from Helpers.inversionMethod import InversionMethod
-from Helpers.mutationMethods import EdgeMutation, SinglePointMutation, TwoPointMutation
+from Helpers.mutationMethods import UniformMutation, GaussMutation
 from Helpers.parents import initPopulation
 import numpy as np
 
@@ -38,6 +38,8 @@ class Model:
                  inversion_function: InversionMethodsEnum,
                  inversion_prob: float,
                  number_of_dimensions: int,
+                 mean : float,
+                 sigma: float,
                  func: FunctionsOptions,
                  title,
                  direction: MinMax,
@@ -58,6 +60,8 @@ class Model:
         self.title = title
         self.init_population = initPopulation(number_of_dimensions, size_of_population)
         self.direction = direction
+        self.mean = mean
+        self.sigma = sigma
 
         self.func = rastrigin(number_of_dimensions) if func == FunctionsOptions.RASTRIGIN else schwefel(
             number_of_dimensions)
@@ -77,12 +81,10 @@ class Model:
             case CrossingMechods.SINGLE_POINT_ARITHMETIC:
                 self.crossing_function = SingleArithmeticalCrossover(0.2).crossover
         match mutation_function:
-            case MutationMechods.EDGE:
-                self.mutation_function = EdgeMutation(number_of_dimensions).mutate
-            case MutationMechods.SINGLE_POINT:
-                self.mutation_function = SinglePointMutation(number_of_dimensions).mutate
-            case MutationMechods.DOUBLE_POINT:
-                self.mutation_function = TwoPointMutation(number_of_dimensions).mutate
+            case MutationMechods.UNIFORM:
+                self.mutation_function = UniformMutation(number_of_dimensions).mutate
+            case MutationMechods.GAUSS:
+                self.mutation_function = GaussMutation(number_of_dimensions, mean, sigma).mutate
         match inversion_function:
             case InversionMethodsEnum.TWO_POINT:
                 self.inversion_function = InversionMethod(number_of_dimensions).inverse
