@@ -29,10 +29,12 @@ class UniformMutation(MutationMethod):
         return mutated_individual
 
 class GaussMutation(MutationMethod):
-    def __init__(self, number_of_dimensions, mean, sigma):
+    def __init__(self, number_of_dimensions, mean, sigma, start_value, end_value):
         self.number_of_dimensions = number_of_dimensions
         self.mean = mean
         self.sigma = sigma
+        self.start_value = start_value
+        self.end_value = end_value
 
     def mutate(self, individual, mutation_rate):
         mutated_individual = individual.copy()

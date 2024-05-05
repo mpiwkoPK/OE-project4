@@ -102,7 +102,7 @@ class Model:
             case MutationMechods.UNIFORM:
                 self.mutation_function = UniformMutation(number_of_dimensions, start_value, end_value).mutate
             case MutationMechods.GAUSS:
-                self.mutation_function = GaussMutation(number_of_dimensions, mean, sigma).mutate
+                self.mutation_function = GaussMutation(number_of_dimensions, mean, sigma, start_value, end_value).mutate
         match inversion_function:
             case InversionMethodsEnum.TWO_POINT:
                 self.inversion_function = InversionMethod(number_of_dimensions).inverse
