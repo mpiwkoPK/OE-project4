@@ -18,8 +18,8 @@ class MainWindow(QWidget):
     numberOfDimensions = 2
     q = 1
     tournament_size = 1
-    mean = 50
-    sigma = 5
+    mean = 0
+    sigma = 1
     start_value = -5  # Dodajemy deklarację atrybutu start_value
     end_value = 5
    
@@ -124,11 +124,11 @@ class MainWindow(QWidget):
                 self.mutationName = MutationMechods.UNIFORM_STRING.value
                 self.mutation_method = MutationMechods.UNIFORM
             case MutationMechods.GAUSS.value:
-                self.mean_label.setText(f'Średnia {self.mean_slider.value()}')
+                self.mean_label.setText(f'Średnia {self.mean_slider.value()/10}')
                 self.mean_label.show()
                 self.mean_slider.valueChanged.connect(self.set_mean)
                 self.mean_slider.show()
-                self.sigma_label.setText(f'Odchylenie standardowe {self.sigma_slider.value()}')
+                self.sigma_label.setText(f'Odchylenie standardowe {self.sigma_slider.value()/10}')
                 self.sigma_label.show()
                 self.sigma_slider.valueChanged.connect(self.set_sigma)
                 self.sigma_slider.show()
@@ -182,11 +182,11 @@ class MainWindow(QWidget):
         self.inversionProbLabel.setText(f'Prawdopodobieństwo inwersji {self.inversionProb}')
 
     def set_mean(self, val):
-        self.meanValue = val
+        self.meanValue = val / 10
         self.mean_label.setText(f'Średnia {self.meanValue}')
 
     def set_sigma(self, val):
-        self.sigmaValue = val
+        self.sigmaValue = val / 10
         self.sigma_label.setText(f'Odchylenie standardowe {self.sigmaValue}')
 
     def set_q(self, val):
@@ -207,11 +207,25 @@ class MainWindow(QWidget):
             self.func = FunctionsOptions.RASTRIGIN
             self.start_value = -5
             self.end_value = 5
-            
+            self.start_value_slider.setMinimum(-20)
+            self.start_value_slider.setMaximum(20)
+            self.start_value_slider.setValue(self.start_value) 
+            self.end_value_slider.setMinimum(-20)
+            self.end_value_slider.setMaximum(20)
+            self.end_value_slider.setValue(self.end_value)
+
+
         else:
             self.func = FunctionsOptions.SCHWEFEK
             self.start_value = -500
             self.end_value = 500
+            self.start_value_slider.setMinimum(-1000)
+            self.start_value_slider.setMaximum(1000) 
+            self.start_value_slider.setValue(self.start_value)
+            self.end_value_slider.setMinimum(-1000)
+            self.end_value_slider.setMaximum(1000)
+            self.end_value_slider.setValue(self.end_value)
+ 
         
         self.start_value_label.setText(f'Początkowy zakres: {self.start_value}')
         self.end_value_label.setText(f'Końcowy zakres: {self.end_value}')
@@ -291,17 +305,16 @@ class MainWindow(QWidget):
         #Range
         self.start_value_label = QLabel(f'Początkowy zakres: {self.start_value}')
         layout_items.append(self.start_value_label)
+        self.start_value_slider = makeSlider(-20, 20, self.start_value)
+        self.start_value_slider.valueChanged.connect(self.set_start_value)
+        layout_items.append(self.start_value_slider)
 
-        start_value_slider = makeSlider(-20 if self.rastrigin_radio.isChecked() else -1000, 20 if self.rastrigin_radio.isChecked() else 1000, self.start_value)
-        start_value_slider.valueChanged.connect(self.set_start_value)
-        layout_items.append(start_value_slider)
-
+        
         self.end_value_label = QLabel(f'Końcowy zakres: {self.end_value}')
         layout_items.append(self.end_value_label)
-
-        end_value_slider = makeSlider(-20 if self.rastrigin_radio.isChecked() else -1000, 20 if self.rastrigin_radio.isChecked() else 1000, self.end_value)
-        end_value_slider.valueChanged.connect(self.set_end_value)
-        layout_items.append(end_value_slider)
+        self.end_value_slider = makeSlider(-20, 20, self.end_value)
+        self.end_value_slider.valueChanged.connect(self.set_end_value)
+        layout_items.append(self.end_value_slider)
 
 
         # Epoch
@@ -410,7 +423,7 @@ class MainWindow(QWidget):
         self.mean_label.hide()
         layout_items.append(self.mean_label)
 
-        self.mean_slider = makeSlider(1, 1000, self.mean)
+        self.mean_slider = makeSlider(0, 5, self.mean)
         self.mean_slider.hide()
         layout_items.append(self.mean_slider)
 
@@ -418,7 +431,7 @@ class MainWindow(QWidget):
         self.sigma_label.hide()
         layout_items.append(self.sigma_label)
 
-        self.sigma_slider = makeSlider(1, 500, self.sigma)
+        self.sigma_slider = makeSlider(0, 5, self.sigma)
         self.sigma_slider.hide()
         layout_items.append(self.sigma_slider)
 

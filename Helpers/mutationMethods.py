@@ -22,7 +22,8 @@ class UniformMutation(MutationMethod):
                 mutated_random_index = random.randint(0, len(mutated_individual) - 1)
                 mutation_value = random.uniform(self.start_value, self.end_value) 
                 mutated_individual[mutated_random_index] = mutation_value
-                mutated_individual[i] = max(min(mutated_individual[i], self.start_value), self.end_value) 
+                print(mutated_individual[i])
+                #mutated_individual[i] = max(min(mutated_individual[i], self.start_value), self.end_value) 
 
             else:
                 mutated_individual[i] = individual[i]
@@ -40,9 +41,10 @@ class GaussMutation(MutationMethod):
         mutated_individual = individual.copy()
         for i in range(self.number_of_dimensions):
             if random.random() < mutation_rate:
-                mutation_value = np.random.normal(self.mean, self.sigma)
+                mutation_value = random.gauss(self.mean, self.sigma)
                 mutated_individual[i] += mutation_value
-                mutated_individual[i] = max(min(mutated_individual[i], self.start_value), self.end_value)
+                #mutated_individual[i] = max(min(mutated_individual[i], self.start_value), self.end_value)
+                print(mutated_individual[i])
             else:
                 mutated_individual[i] = individual[i]
         return mutated_individual
