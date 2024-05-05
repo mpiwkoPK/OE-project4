@@ -40,6 +40,8 @@ class Model:
                  number_of_dimensions: int,
                  mean : float,
                  sigma: float,
+                 start_value: float,
+                 end_value: float,
                  func: FunctionsOptions,
                  title,
                  direction: MinMax,
@@ -62,6 +64,8 @@ class Model:
         self.direction = direction
         self.mean = mean
         self.sigma = sigma
+        self.start_value = start_value
+        self.end_value = end_value
 
         self.func = rastrigin(number_of_dimensions) if func == FunctionsOptions.RASTRIGIN else schwefel(
             number_of_dimensions)
@@ -96,7 +100,7 @@ class Model:
                 self.crossing_function = SimpleCrossover(0.2).crossover
         match mutation_function:
             case MutationMechods.UNIFORM:
-                self.mutation_function = UniformMutation(number_of_dimensions).mutate
+                self.mutation_function = UniformMutation(number_of_dimensions, start_value, end_value).mutate
             case MutationMechods.GAUSS:
                 self.mutation_function = GaussMutation(number_of_dimensions, mean, sigma).mutate
         match inversion_function:

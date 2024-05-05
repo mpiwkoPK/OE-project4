@@ -20,8 +20,13 @@ class MainWindow(QWidget):
     tournament_size = 1
     mean = 50
     sigma = 5
+    start_value = -5  # Dodajemy deklarację atrybutu start_value
+    end_value = 5
+   
+  
 
     selectionName = SelectionMechods.BEST_STRING.value
+     
     crossingName = CrossingMechods.SINGLE_POINT_ARITHMETIC_STRING.value
     mutationName = MutationMechods.UNIFORM_STRING.value
     inversionName = InversionMethods.TWO_POINT_STRING.value
@@ -47,6 +52,8 @@ class MainWindow(QWidget):
                             number_of_dimensions=self.numberOfDimensions,
                             mean=self.mean,
                             sigma=self.sigma,
+                            start_value = self.start_value,
+                            end_value = self.end_value,
                             func=self.func,
                             title=f'{self.selectionName} - {self.crossingName}',
                             direction=self.minmax,
@@ -142,6 +149,14 @@ class MainWindow(QWidget):
         self.numberOfDimensions = val
         self.dimensionsSizeLabel.setText(f'Liczba wymiarów {self.numberOfDimensions}')
 
+    def set_start_value(self,val):
+        self.start_value = val
+        self.start_value_label.setText(f'Początkowy zakres: {self.start_value}')
+
+    def set_end_value(self,val):
+        self.end_value = val
+        self.end_value_label.setText(f'Końcowy zakres: {self.end_value}')
+
     def set_number_of_parents(self, val):
         self.numberOfParents = val
         self.numberOfParentsLabel.setText(f'Liczba osobników selekcji {self.numberOfParents}')
@@ -190,14 +205,23 @@ class MainWindow(QWidget):
     def set_function(self):
         if self.rastrigin_radio.isChecked():
             self.func = FunctionsOptions.RASTRIGIN
+            self.start_value = -5
+            self.end_value = 5
+            
         else:
             self.func = FunctionsOptions.SCHWEFEK
+            self.start_value = -500
+            self.end_value = 500
+        
+        self.start_value_label.setText(f'Początkowy zakres: {self.start_value}')
+        self.end_value_label.setText(f'Końcowy zakres: {self.end_value}')
 
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("OE Proj 4. Wieczorek, Piwko, Ratowska")
         layout_items = []
+
 
         function_layout = QHBoxLayout()
         function_layout.setContentsMargins(0, 0, 0, 0)
@@ -263,6 +287,22 @@ class MainWindow(QWidget):
         num_of_parents_slider = makeSlider(10, 1000, self.numberOfParents)
         num_of_parents_slider.valueChanged.connect(self.set_number_of_parents)
         layout_items.append(num_of_parents_slider)
+
+        #Range
+        self.start_value_label = QLabel(f'Początkowy zakres: {self.start_value}')
+        layout_items.append(self.start_value_label)
+
+        start_value_slider = makeSlider(-20 if self.rastrigin_radio.isChecked() else -1000, 20 if self.rastrigin_radio.isChecked() else 1000, self.start_value)
+        start_value_slider.valueChanged.connect(self.set_start_value)
+        layout_items.append(start_value_slider)
+
+        self.end_value_label = QLabel(f'Końcowy zakres: {self.end_value}')
+        layout_items.append(self.end_value_label)
+
+        end_value_slider = makeSlider(-20 if self.rastrigin_radio.isChecked() else -1000, 20 if self.rastrigin_radio.isChecked() else 1000, self.end_value)
+        end_value_slider.valueChanged.connect(self.set_end_value)
+        layout_items.append(end_value_slider)
+
 
         # Epoch
         self.numberOfEpochLabel = QLabel(f'Liczba epok {self.numberOfEpoch}')

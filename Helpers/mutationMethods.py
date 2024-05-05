@@ -9,16 +9,23 @@ class MutationMethod:
         pass
 
 class UniformMutation(MutationMethod):
-    def __init__(self, number_of_dimensions):
+    def __init__(self, number_of_dimensions, start_value, end_value):
         self.number_of_dimensions = number_of_dimensions
+        self.start_value = start_value
+        self.end_value = end_value
 
     def mutate(self, individual, mutation_rate):
         mutated_individual = individual.copy()
+        
         for i in range(self.number_of_dimensions):
             if random.random() < mutation_rate:
-                mutation_value = random.uniform(-1, 1) 
-                mutated_individual[i] += mutation_value
-                mutated_individual[i] = max(min(mutated_individual[i], 1), -1) 
+                mutated_random_index = random.randint(0, len(mutated_individual) - 1)
+                mutation_value = random.uniform(self.start_value, self.end_value) 
+                mutated_individual[mutated_random_index] = mutation_value
+                mutated_individual[i] = max(min(mutated_individual[i], self.start_value), self.end_value) 
+
+            else:
+                mutated_individual[i] = individual[i]
         return mutated_individual
 
 class GaussMutation(MutationMethod):
@@ -33,4 +40,7 @@ class GaussMutation(MutationMethod):
             if random.random() < mutation_rate:
                 mutation_value = random.gauss(self.mean, self.sigma)
                 mutated_individual[i] += mutation_value
+                mutated_individual[i] = max(min(mutated_individual[i], self.start_value), self.end_value)
+            else:
+                mutated_individual[i] = individual[i]
         return mutated_individual
