@@ -136,14 +136,21 @@ class SimpleCrossover(CrossoverMethod):
     def crossover(self, pop: np.ndarray, alpha=0.2):
         n_pop, n_dim = pop.shape
         parents = pop[np.random.choice(n_pop, 2, replace=False)]
-        gen_idx = np.random.randint(0, n_dim)
-        p1_gen = parents[0, gen_idx]
-        p2_gen = parents[1, gen_idx]
-        child1 = parents[0]
-        child2 = parents[1]
-        child1[gen_idx] = (1 - alpha) * p1_gen + alpha * p2_gen
-        child2[gen_idx] = (1 - alpha) * p2_gen + alpha * p1_gen
+        print(parents)
 
+        crossing_point = np.random.randint(1, len(parents[0]))
+        child1 = []
+        child2 = []
+
+        for i in range(0, crossing_point):
+            child1.append(parents[0][i])
+            child2.append(parents[1][i])
+        for i in range(crossing_point, len(parents[0])):
+            child1.append(alpha * parents[1][i] + (1 - alpha) * parents[0][i])
+            child2.append(alpha * parents[0][i] + (1 - alpha) * parents[1][i])
+         
+        print("DZIECKO1: ", child1)
+        print("DZIECKO2: ", child2)
         return np.array([child1, child2])
     
 class BlendCrossoverAlfa(CrossoverMethod):
