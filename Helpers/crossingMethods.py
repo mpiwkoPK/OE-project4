@@ -147,3 +147,35 @@ class SimpleCrossover(CrossoverMethod):
         child2[gen_idx] = (1 - alpha) * p2_gen + alpha * p1_gen
 
         return np.array([child1, child2])
+    
+class BlendCrossoverAlfa(CrossoverMethod):
+    def __init__(self, probability):
+        self.probability = probability
+
+    def crossover(self, pop: np.ndarray):
+        n_pop, n_dim = pop.shape
+        alpha = np.random.uniform()
+        parents = pop[np.random.choice(n_pop, 2, replace=False)]
+        print("RODZICE: ", parents)
+        child1 = parents[0].copy()
+        child2 = parents[1].copy()
+        if alpha < self.probability:
+            for i in range(len(parents[0])):
+                x1 = parents[0][i]
+                x2 = parents[1][i]
+                distancia = abs(x1-x2)
+                u1 = np.random.uniform(min(x1,x2)-alpha*distancia, max(x1,x2)+alpha*distancia)
+                u2 = np.random.uniform(min(x1,x2)-alpha*distancia, max(x1,x2)+alpha*distancia)
+
+                child1[i] = u1
+                child2[i] = u2
+        print("dziecko1: ", child1)
+        print("dziecko2: ", child2)
+
+        return np.array([child1, child2])
+
+
+
+
+    
+#class AlphaBetaCrossover(CrossoverMethod):

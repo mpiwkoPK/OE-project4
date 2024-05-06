@@ -22,7 +22,6 @@ class UniformMutation(MutationMethod):
                 mutated_random_index = random.randint(0, len(mutated_individual) - 1)
                 mutation_value = random.uniform(self.start_value, self.end_value) 
                 mutated_individual[mutated_random_index] = mutation_value
-                print(mutated_individual[i])
                 #mutated_individual[i] = max(min(mutated_individual[i], self.start_value), self.end_value) 
 
             else:
