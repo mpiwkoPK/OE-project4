@@ -87,7 +87,7 @@ class Model:
             case CrossingMechods.ARITHMETIC:
                 self.crossing_function = ArithmeticalCrossover(0.2).crossover
             case CrossingMechods.LINEAR:
-                self.crossing_function = LinearCrossover(0.2).crossover
+                self.crossing_function = LinearCrossover(self.func).crossover
             case CrossingMechods.BLEND_ALFA:
                 self.crossing_function = BlendCrossoverAlfa(crossing_probability).crossover
             case CrossingMechods.BLEND_ALFA_BETA:
