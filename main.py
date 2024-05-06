@@ -22,11 +22,11 @@ class MainWindow(QWidget):
     sigma = 1
     start_value = -5  # Dodajemy deklarację atrybutu start_value
     end_value = 5
-   
-  
+
+
 
     selectionName = SelectionMechods.BEST_STRING.value
-     
+
     crossingName = CrossingMechods.SINGLE_POINT_ARITHMETIC_STRING.value
     mutationName = MutationMechods.UNIFORM_STRING.value
     inversionName = InversionMethods.TWO_POINT_STRING.value
@@ -209,7 +209,7 @@ class MainWindow(QWidget):
             self.end_value = 5
             self.start_value_slider.setMinimum(-20)
             self.start_value_slider.setMaximum(20)
-            self.start_value_slider.setValue(self.start_value) 
+            self.start_value_slider.setValue(self.start_value)
             self.end_value_slider.setMinimum(-20)
             self.end_value_slider.setMaximum(20)
             self.end_value_slider.setValue(self.end_value)
@@ -220,13 +220,13 @@ class MainWindow(QWidget):
             self.start_value = -500
             self.end_value = 500
             self.start_value_slider.setMinimum(-1000)
-            self.start_value_slider.setMaximum(1000) 
+            self.start_value_slider.setMaximum(1000)
             self.start_value_slider.setValue(self.start_value)
             self.end_value_slider.setMinimum(-1000)
             self.end_value_slider.setMaximum(1000)
             self.end_value_slider.setValue(self.end_value)
- 
-        
+
+
         self.start_value_label.setText(f'Początkowy zakres: {self.start_value}')
         self.end_value_label.setText(f'Końcowy zakres: {self.end_value}')
 
@@ -309,7 +309,7 @@ class MainWindow(QWidget):
         self.start_value_slider.valueChanged.connect(self.set_start_value)
         layout_items.append(self.start_value_slider)
 
-        
+
         self.end_value_label = QLabel(f'Końcowy zakres: {self.end_value}')
         layout_items.append(self.end_value_label)
         self.end_value_slider = makeSlider(-20, 20, self.end_value)

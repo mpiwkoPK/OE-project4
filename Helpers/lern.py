@@ -95,7 +95,7 @@ class Model:
             case CrossingMechods.AVERAGE:
                 self.crossing_function = AverageCrossover().crossover
             case CrossingMechods.RANDOM:
-                self.crossing_function = RandomCrossover(0.2).crossover
+                self.crossing_function = RandomCrossover().crossover
             case CrossingMechods.SIMPLE:
                 self.crossing_function = SimpleCrossover(0.2).crossover
         match mutation_function:

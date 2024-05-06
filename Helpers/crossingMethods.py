@@ -60,11 +60,11 @@ class BlendCrossoverAlfaBeta(CrossoverMethod):
         n_pop, n_dim = pop.shape
         parents = pop[np.random.choice(n_pop, 2, replace=False)]
         child1 = np.empty_like(parents[0])
-        child2 = np.empty_like(parents[0]) 
+        child2 = np.empty_like(parents[0])
 
         alpha = np.random.uniform(low=0, high=1)
         beta = np.random.uniform(low=0, high=1)
-            
+
 
         for i in range(len(parents[0])):
             x1 = parents[0][i]
@@ -88,22 +88,20 @@ class AverageCrossover(CrossoverMethod):
 
 
 class RandomCrossover(CrossoverMethod):
-    def __init__(self, alpha):
-        self.alpha = alpha
-
-    def crossover(self, pop: np.ndarray, alpha=0.2):
+     def crossover(self, pop: np.ndarray):
         n_pop, n_dim = pop.shape
         parents = pop[np.random.choice(n_pop, 2, replace=False)]
-        gen_idx = np.random.randint(0, n_dim)
-        p1_gen = parents[0, gen_idx]
-        p2_gen = parents[1, gen_idx]
-        child1 = parents[0]
-        child2 = parents[1]
-        child1[gen_idx] = (1 - alpha) * p1_gen + alpha * p2_gen
-        child2[gen_idx] = (1 - alpha) * p2_gen + alpha * p1_gen
+
+        chromosome_Z = np.array([np.random.uniform() for i in range(n_dim)])
+        chromosome_W = np.array([np.random.uniform() for i in range(n_dim)])
+
+        crossover_point_X = np.random.randint(0, n_dim)
+        crossover_point_Y = np.random.randint(0, n_dim)
+
+        child1 = np.concatenate((parents[0][:crossover_point_X], chromosome_Z[crossover_point_X:]))
+        child2 = np.concatenate((parents[1][:crossover_point_Y], chromosome_W[crossover_point_Y:]))
 
         return np.array([child1, child2])
-
 
 class SimpleCrossover(CrossoverMethod):
     def __init__(self, alpha):
