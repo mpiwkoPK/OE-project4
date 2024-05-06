@@ -35,6 +35,7 @@ class ArithmeticalCrossover(CrossoverMethod):
         p2_gen = parents[1, gen_idx]
         child1 = parents[0]
         child2 = parents[1]
+
         child1[gen_idx] = (1 - alpha) * p1_gen + alpha * p2_gen
         child2[gen_idx] = (1 - alpha) * p2_gen + alpha * p1_gen
 
@@ -42,24 +43,6 @@ class ArithmeticalCrossover(CrossoverMethod):
 
 
 class LinearCrossover(CrossoverMethod):
-    def __init__(self, alpha):
-        self.alpha = alpha
-
-    def crossover(self, pop: np.ndarray, alpha=0.2):
-        n_pop, n_dim = pop.shape
-        parents = pop[np.random.choice(n_pop, 2, replace=False)]
-        gen_idx = np.random.randint(0, n_dim)
-        p1_gen = parents[0, gen_idx]
-        p2_gen = parents[1, gen_idx]
-        child1 = parents[0]
-        child2 = parents[1]
-        child1[gen_idx] = (1 - alpha) * p1_gen + alpha * p2_gen
-        child2[gen_idx] = (1 - alpha) * p2_gen + alpha * p1_gen
-
-        return np.array([child1, child2])
-
-
-class BlendCrossoverAlfa(CrossoverMethod):
     def __init__(self, alpha):
         self.alpha = alpha
 
@@ -157,9 +140,12 @@ class BlendCrossoverAlfa(CrossoverMethod):
         alpha = np.random.uniform()
         parents = pop[np.random.choice(n_pop, 2, replace=False)]
         print("RODZICE: ", parents)
-        child1 = parents[0].copy()
-        child2 = parents[1].copy()
+        
+        child1 = np.empty_like(parents[0])
+        child2 = np.empty_like(parents[0])
         if alpha < self.probability:
+            
+            
             for i in range(len(parents[0])):
                 x1 = parents[0][i]
                 x2 = parents[1][i]
