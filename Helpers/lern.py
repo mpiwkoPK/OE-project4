@@ -186,8 +186,7 @@ class Model:
                 if random.random() >= self.crossing_probability:
                     temp_population = np.append(temp_population, self.crossing_function(temp_population), axis=0)
 
-            best_old_spec = self.getBestAlive(population)
-            best_old_spec = copy.deepcopy(best_old_spec)
+            best_old_spec = copy.deepcopy(self.getBestAlive(population))
             best_new_spec = self.find_best_spec(self.func, temp_population, self.direction)
 
             for spec_index in range(self.size_of_population):
@@ -212,3 +211,4 @@ class Model:
         save_to_file(self.best_values, self.best_spec, 'best')
         make_plot(self.avg_values, 'avg', self.title)
         make_plot(self.stddev_values, 'std', self.title)
+
